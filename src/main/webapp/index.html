@@ -29,6 +29,8 @@
 
     <!-- Templates -->
 	<script type="text/template" id="form-template">
+		<fieldset>
+		<legend>Workout Details</legend>
 		<div><span class="formLabel">Name</span><input name="name" type='text'/></div>
 		<div><span class="formLabel">Date</span><input name="date" id="datepicker" type="text"/></div>
 		<div><span class="formLabel">Time</span><input name="time" type='text'/></div>
@@ -38,15 +40,16 @@
 			<span class="formLabel"># of Exercises</span><select id="numEx"/></div>
 		</div>
 		
-		<div class="exDetails">
-		
+		<div class="exDetails">		
 		</div>
 		
 		<input id="submitbtn" type="submit" value="Add Workut" class="submitBtn"/>
-		
+		</fieldset>
 	</script>
 	
 	<script type="text/template" id="ex-template">
+		<fieldset>
+		<legend>Exercise Details</legend>
 		<div class="exerciseForm">
 			<div><span class="exNameLbl">Exercise Name</span><input name="name" type="text" class="exName"/><span class="selectLbl"># of Sets</span><select id="numSets"/></div>
 			<div>
@@ -56,9 +59,10 @@
 				</table>
 			</div>
 		</div>
+		</fieldset>
 	</script>
 	
-	<script type="text/template" id="set-template">
+	<script type="text/template" id="set-template">		
 		<td><input type='text' name="reps" value='<%=setobj.get('reps')%>'/></td>
 		<td><input type='text' name="weight" value='<%=setobj.get('weight')%>'/></td>
 		<td><input class="notes" name="notes" type='text' value='<%=setobj.get('notes')%>'/></td>
