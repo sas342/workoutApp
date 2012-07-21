@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<mapping>
+	<class name="com.workoutjournal.model.WorkoutList" auto-complete="false">
+		<field name="workouts" collection="arraylist" type="com.workoutjournal.model.Workout">
+			<bind-xml name="workout" node="element"/>
+		</field>
+		<field name="totalCount" type="integer">
+			<bind-xml name="totalCount" node="attribute"/>
+		</field>
+		<field name="size" type="integer">
+			<bind-xml name="size" node="attribute"/>
+		</field>
+		<field name="start" type="integer">
+			<bind-xml name="start" node="attribute"/>
+		</field>
+	</class>
+	<class name="com.workoutjournal.model.ExerciseList" auto-complete="true">
+		<field name="exercises" collection="arraylist" type="com.workoutjournal.model.Exercise">
+			<bind-xml name="exercise" node="element"/>
+		</field>
+		<field name="totalCount" type="integer">
+			<bind-xml name="totalCount" node="attribute"/>
+		</field>
+		<field name="size" type="integer">
+			<bind-xml name="size" node="attribute"/>
+		</field>
+		<field name="start" type="integer">
+			<bind-xml name="start" node="attribute"/>
+		</field>
+	</class>
+	<class name="com.workoutjournal.model.Workout" auto-complete="false">
+		<field name="workoutId" type="integer">
+			<bind-xml name="id" node="attribute"/>
+		</field>
+		<field name="name" type="string">
+			<bind-xml name="name" node="attribute"/>
+		</field>
+		<field name="date" type="string" handler="com.workoutjournal.util.DateHandler">
+			<bind-xml name="date" node="attribute"/>
+		</field>
+		<field name="time" type="integer">
+			<bind-xml name="time" node="attribute"/>
+		</field>
+		<field name="notes" type="string">
+			<bind-xml name="notes" node="element"/>
+		</field>
+		<field name="exerciseList" collection="arraylist" type="com.workoutjournal.model.Exercise">
+			<bind-xml name="exercise" node="element"/>
+		</field>
+	</class>
+	
+	<class name="com.workoutjournal.model.Exercise" auto-complete="true">
+		<field name="exerciseId" type="integer">
+			<bind-xml name="id" node="attribute"/>
+		</field>
+		
+		<field name="workoutId" type="integer">
+			<bind-xml name="workoutId" node="attribute"/>
+		</field>
+		
+		<field name="exNum" type="integer">
+			<bind-xml name="num" node="attribute"/>
+		</field>
+		
+		<field name="setsList" collection="arraylist" type="com.workoutjournal.model.ExSet">
+			<bind-xml name="set" node="element"/>
+		</field>
+		
+		<field name="exercises" type="com.workoutjournal.model.Exercises">
+			<bind-xml name="exerciseName" node="element"/>
+		</field>
+		
+		
+	</class>
+	
+	<class name="com.workoutjournal.model.Exercises" auto-complete="true">
+		<map-to xml="exerciseName"/>
+		<field name="id" type="integer">
+			<bind-xml name="id" node="attribute"/>
+		</field>
+		<field name="name" type="string">
+			<bind-xml name="name" node="attribute"/>
+		</field>
+	</class>
+	
+	<class name="com.workoutjournal.model.ExSet" auto-complete="true">
+		<map-to xml="set"/>
+	
+		<field name="reps" type="integer">
+			<bind-xml name="reps" node="attribute"/>
+		</field>
+		<field name="weight" type="integer">
+			<bind-xml name="weight" node="attribute"/>
+		</field>
+		<field name="number" type="integer">
+			<bind-xml name="num" node="attribute"/>
+		</field>
+		<field name="id" type="integer">
+			<bind-xml name="id" node="attribute"/>
+		</field>
+		<field name="exId" type="integer">
+			<bind-xml name="exId" node="attribute"/>
+		</field>
+		<field name="time" type="integer">
+			<bind-xml name="time" node="attribute"/>
+		</field>
+		<field name="notes" type="string">
+			<bind-xml name="notes" node="element"/>
+		</field>
+	</class>
+</mapping>

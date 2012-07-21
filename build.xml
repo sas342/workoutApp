@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="jar">
+	<property name="src" value="src"/>
+	<property name="destdir" value="target"/>
+		
+	<target name="jar">
+		<jar destfile="${destdir}/workoutServiceAPI.jar"
+			basedir="${destdir}/WorkoutService/WEB-INF/classes"
+			includes="com/workoutjournal/model/**">
+		</jar>
+	</target>
+	
+</project>
