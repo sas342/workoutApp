@@ -14,7 +14,7 @@ $(function($){
 		
 		toJSON: function() {
 			var object = Backbone.Model.prototype.toJSON.call(this);
-			object['exList'] = this.exList;
+			object['exerciseList'] = this.exList;
 			return object;
 		}
 				
@@ -24,7 +24,7 @@ $(function($){
 	
 	var Exercise = Backbone.Model.extend({
 		defaults: {
-			"exnum": ""
+			"exNum": ""
 		},
 		
 		initialize: function() {
@@ -88,7 +88,7 @@ $(function($){
 		
 		valuesUpdated: function(e) {
 			e.stopImmediatePropagation();
-			alert("setsForm "+e.target.name+" "+e.target.value);
+			
 			var target = e.target;
 			this.model.set(target.name, target.value);
 		}
@@ -159,8 +159,7 @@ $(function($){
 		
 		updateExName: function(e) {
 			e.stopImmediatePropagation();
-			alert("exForm "+e.target.name+" "+e.target.value);
-		
+					
 			var target = e.target;
 			this.model.exercises.set(target.name, target.value);
 		},
@@ -213,7 +212,7 @@ $(function($){
 			var template = _.template( $("#form-template").html(), {});
 			$(this.el).html(template);
 			
-			$("#datepicker").datepicker();
+			$("#datepicker").datepicker({ dateFormat: "yy-mm-dd" });
 			
 			return this;
 		},
@@ -239,7 +238,7 @@ $(function($){
 		
 		addExercise : function() {
 			
-			this.model.exList.add({exnum: this.model.exList.length+1});
+			this.model.exList.add({exNum: this.model.exList.length+1});
 		},
 		
 		removeExercise : function() {
@@ -259,13 +258,23 @@ $(function($){
 			
 		},
 		
-		updateWorkoutValues: function(e) {alert("workoutForm "+e.target.name+" "+e.target.value);
+		updateWorkoutValues: function(e) {
 			var target = e.target;
 			this.model.set(target.name, target.value);
 		},
 		
 		submitWorkout : function() {
 			alert(JSON.stringify(this.model));
+			$.ajax({
+				type: 'POST',
+				contentType: 'application/json',
+				url: "rest/workouts.json",
+				data: JSON.stringify(this.model),
+				success: function(data) {
+					alert("workout saved");
+				},
+				dataType: "json"});
+			
 		}
 		
 	});
