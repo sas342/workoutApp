@@ -1,11 +1,41 @@
 $(function($){
 
+	var Workspace = Backbone.Router.extend({
+		routes: {
+			"update/:id": "update",
+			"": "workouts"
+
+		},
+
+		update : function(id) {
+			var model;			
+			if (id) {
+	
+			} else {
+				model = new Workout();
+				
+			}
+
+			var form = new WorkoutForm({model: model,  el: $("#content")});
+		},
+	
+		workouts : function() {
+			var workoutCollection = new WorkoutList();
+			var view = new WorkoutListView({model: workoutCollection});
+			workoutCollection.fetch();
+			$("#content").html(view.el);
+		}
+
+
+	});
+
 	var Workout = Backbone.Model.extend({
 		defaults: {
 			"name": "",
 			"time": "0",
 			"date": "",
-			"notes": ""
+			"notes": "",
+			"workoutId": "0"
 		},
 				
 		initialize: function() {
@@ -15,6 +45,9 @@ $(function($){
 		toJSON: function() {
 			var object = Backbone.Model.prototype.toJSON.call(this);
 			object['exerciseList'] = this.exList;
+			if (this.get('workoutId') == 0) {
+				delete object['workoutId'];
+			}
 			return object;
 		}
 				
@@ -55,6 +88,17 @@ $(function($){
 			"number": 1
 		}
 	});
+
+	var WorkoutList = Backbone.Collection.extend({
+		model: Workout,
+
+		url: "rest/workouts.json",
+
+		parse : function(response) {			
+			return response.workouts;
+		}
+	
+	});
 	
 	var ExerciseList = Backbone.Collection.extend({
 		model: Exercise
@@ -65,6 +109,36 @@ $(function($){
 	});
 	
 	
+
+	var WorkoutItemView = Backbone.View.extend({
+		tagName: 'tr',
+
+		render: function() {
+			var template = _.template( $("#workoutItem-template").html(), {setobj: this.model});
+			$(this.el).html(template);
+			return this;
+		}
+	});
+
+	var WorkoutListView = Backbone.View.extend({
+
+		initialize : function(options) {
+			//_.bindAll(this, 'render');	
+			this.model.bind("reset", this.render, this);
+			
+		},
+
+		render: function() {
+			var template = _.template($("#workoutCollection-template").html(), {});
+			$(this.el).html(template);
+			_.each(this.model.models, function(w) {				
+				this.$('tbody').append(new WorkoutItemView({model: w}).render().el);
+			}, this);
+			return this;
+		}
+
+	});
+
 	/**
 	*  Form to edit a workout set 
 	*/
@@ -201,14 +275,20 @@ $(function($){
 			_.bindAll(this, 'render', 'addExercise', 'removeExercise', 'addExerciseForm', 'removeExerciseForm', 'createSelects', 'updateNumberOfExercises', 'updateWorkoutValues'); 
 			this.model.exList.bind('add', this.addExerciseForm);
 			this.model.exList.bind('remove', this.removeExerciseForm);
-			this.render().createSelects();	
-			
-			this.addExercise();
+			this.setup();
 			
 		},
-		
-		render: function() {
+
+		setup: function() {
+			this.render().createSelects();	
 			
+			if (this.model.get('workoutId') == 0) {
+				this.addExercise();
+			}
+
+		},
+		
+		render: function() {		
 			var template = _.template( $("#form-template").html(), {});
 			$(this.el).html(template);
 			
@@ -259,30 +339,34 @@ $(function($){
 		},
 		
 		updateWorkoutValues: function(e) {
+	
 			var target = e.target;
 			this.model.set(target.name, target.value);
 		},
 		
 		submitWorkout : function() {
-			alert(JSON.stringify(this.model));
+			var that = this;
 			$.ajax({
 				type: 'POST',
 				contentType: 'application/json',
 				url: "rest/workouts.json",
 				data: JSON.stringify(this.model),
 				success: function(data) {
-					alert("workout saved");
+					that.clear();
 				},
 				dataType: "json"});
-			
+					
+		},
+
+		clear : function() {
+			this.model.clear();
+			this.setup();
 		}
 		
 	});
 
 	
 	
-	//var model = new Exercise();
-	var model = new Workout();
-	var form = new WorkoutForm({model: model,  el: $("#workoutForm")});
-
+	var app = new Workspace();
+	Backbone.history.start();
 });

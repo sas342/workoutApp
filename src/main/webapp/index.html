@@ -21,13 +21,36 @@
 
     <!-- Todo App Interface -->
 
-   <div id="workoutForm">
+   <div id="content">
 			
 	</div>
 
   
 
     <!-- Templates -->
+	<script type="text/template" id="workoutCollection-template">
+		<table>
+			<tr>
+			<th class="workoutItem">Name</th>
+			<th class="workoutItem">Date</th>
+			<th class="workoutItem">Time</th>
+			<th class="workoutItem">Notes</th>
+			<th class="workoutItem">Options</th>
+			</tr>
+			<tbody/>
+		</table>
+	</script>
+
+	<script type="text/template" id="workoutItem-template">
+		
+		<td class="workoutItem"><%=setobj.get('name')%></td>
+		<td class="workoutItem"><%=setobj.get('date')%></td>
+		<td class="workoutItem"><%=setobj.get('time')%></td>
+		<td class="workoutItem"><%=setobj.get('notes')%></td>
+		<td class="workoutItem">edit</td>
+		
+	</script>
+
 	<script type="text/template" id="form-template">
 		<fieldset>
 		<legend>Workout Details</legend>
@@ -43,7 +66,7 @@
 		<div class="exDetails">		
 		</div>
 		
-		<input id="submitbtn" type="submit" value="Add Workut" class="submitBtn"/>
+		<input id="submitbtn" type="submit" value="Save Workout" class="submitBtn"/>
 		</fieldset>
 	</script>
 	
