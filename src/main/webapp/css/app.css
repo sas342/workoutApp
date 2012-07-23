@@ -55,3 +55,18 @@ fieldset {
   margin-top: 20px;
   background: #dddddd !important;
 }
+
+/** workout table */
+.workoutItem {
+  width: 200px;
+  text-align: center;
+}
+
+.workoutRow {
+  border: thin solid #ddd;
+  display: table;
+}
+
+.headerRow {
+  background: #ddd;
+}

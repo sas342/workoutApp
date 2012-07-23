@@ -112,6 +112,7 @@ $(function($){
 
 	var WorkoutItemView = Backbone.View.extend({
 		tagName: 'tr',
+		className: 'workoutRow',
 
 		render: function() {
 			var template = _.template( $("#workoutItem-template").html(), {setobj: this.model});
@@ -123,7 +124,7 @@ $(function($){
 	var WorkoutListView = Backbone.View.extend({
 
 		initialize : function(options) {
-			//_.bindAll(this, 'render');	
+			_.bindAll(this, 'render');	
 			this.model.bind("reset", this.render, this);
 			
 		},
