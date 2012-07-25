@@ -70,3 +70,19 @@ fieldset {
 .headerRow {
   background: #ddd;
 }
+
+.headerRow .sortable {
+  text-decoration: underline;  
+}
+.headerRow .sortable:hover {
+  cursor: pointer;
+}
+
+.paginator .first, .paginator .prev, .paginator .next, .paginator .last {
+  margin: 5px;
+}
+
+.paginator .first:hover, .paginator .prev:hover, .paginator .next:hover, .paginator .last:hover {
+  cursor: pointer;
+}
+

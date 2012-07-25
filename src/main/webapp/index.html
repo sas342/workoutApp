@@ -28,12 +28,16 @@
   
 
     <!-- Templates -->
+	<script type="text/template" id="pagination-template">
+		<span class="first"><<</span><span class="prev"><</span><%=setobj.start%> - <%=setobj.start + setobj.models.length%> of <%=setobj.totalCount%><span class="next">></span><span class="last">>></span>
+	</script>
+	
 	<script type="text/template" id="workoutCollection-template">
 		<table>
 			<tr class="workoutRow headerRow">
-			<th class="workoutItem">Name</th>
-			<th class="workoutItem">Date</th>
-			<th class="workoutItem">Time</th>
+			<th class="workoutItem sortable">Name</th>
+			<th class="workoutItem sortable">Date</th>
+			<th class="workoutItem sortable">Time</th>
 			<th class="workoutItem">Notes</th>
 			<th class="workoutItem">Options</th>
 			</tr>

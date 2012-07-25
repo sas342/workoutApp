@@ -91,12 +91,19 @@ $(function($){
 
 	var WorkoutList = Backbone.Collection.extend({
 		model: Workout,
-
+		
 		url: "rest/workouts.json",
 
-		parse : function(response) {			
+		initialize: function(options) {
+			this.orderBy = "Name";
+			this.dir = "asc";
+		},
+		
+		parse : function(response) {
+			this.totalCount = response.totalCount;
+			this.start = response.start;			
 			return response.workouts;
-		}
+		}	
 	
 	});
 	
@@ -110,6 +117,52 @@ $(function($){
 	
 	
 
+	var PaginatorView = Backbone.View.extend({
+		className: "paginator",
+		
+		events: {
+			"click .first": "first",
+			"click .prev": "prev",
+			"click .next": "next",
+			"click .last": "last"
+		},
+		
+		initialize: function(options) {
+			_.bindAll(this, 'first', 'prev', 'next', 'last');
+		},
+		
+		render: function() {
+			var template = _.template($("#pagination-template").html(), {setobj: this.model});
+			$(this.el).html(template);
+			return this;
+		},
+		
+		first: function() {			
+			this.model.fetch({data: {"offset":"0", "sortField": this.model.orderBy, "sortDir": this.model.dir}});
+		},
+		
+		prev: function() {
+			var size = this.model.models.length;
+			var offset = this.model.start - size;
+			this.model.fetch({data: {"offset": offset, "sortField": this.model.orderBy, "sortDir": this.model.dir}});
+		},
+		
+		next: function() {
+			var size = this.model.models.length;
+			var offset = this.model.start + size;
+			this.model.fetch({data: {"offset": offset, "sortField": this.model.orderBy, "sortDir": this.model.dir}});
+		},
+		
+		last: function() {
+			var total = this.model.totalCount;
+			var size = this.model.models.length;
+			var offset = total - size;
+			
+			this.model.fetch({data: {"offset": offset, "sortField": this.model.orderBy, "sortDir": this.model.dir}});
+		}
+		
+	});
+	
 	var WorkoutItemView = Backbone.View.extend({
 		tagName: 'tr',
 		className: 'workoutRow',
@@ -122,11 +175,13 @@ $(function($){
 	});
 
 	var WorkoutListView = Backbone.View.extend({
-
+		events: {
+			"click .headerRow .sortable" : "sort"
+		},
+		
 		initialize : function(options) {
 			_.bindAll(this, 'render');	
-			this.model.bind("reset", this.render, this);
-			
+			this.model.bind("reset", this.render, this);			
 		},
 
 		render: function() {
@@ -135,7 +190,24 @@ $(function($){
 			_.each(this.model.models, function(w) {				
 				this.$('tbody').append(new WorkoutItemView({model: w}).render().el);
 			}, this);
+			this.$('table').append(new PaginatorView({model: this.model}).render().el);
 			return this;
+		},
+		
+		sort: function(e) {
+			var target = e.target;
+			alert(target.childNodes[0].nodeValue);
+			var column = target.childNodes[0].nodeValue;
+			var dir;
+			if (this.model.dir == "asc") {
+				dir = "desc";
+			} else {
+				dir = "asc";
+			}
+			
+			this.model.dir = dir;
+			this.model.orderBy = column;
+			this.model.fetch({data: {"sortField": column, "sortDir": dir}});
 		}
 
 	});
