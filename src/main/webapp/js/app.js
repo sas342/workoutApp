@@ -2,6 +2,7 @@ $(function($){
 
 	var Workspace = Backbone.Router.extend({
 		routes: {
+			"add": "update",
 			"update/:id": "update",
 			"": "workouts"
 
@@ -12,7 +13,7 @@ $(function($){
 			if (id) {
 				model = new Workout({id: id});
 				model.fetch();
-			} else {
+			} else {alert('new');
 				model = new Workout();
 				
 			}
@@ -45,8 +46,7 @@ $(function($){
 			this.exerciseList = new ExerciseList();
 		},
 		
-		parse: function(response) {	
-			alert(JSON.stringify(response.workout));			
+		parse: function(response) {				
 			this.exerciseList = new ExerciseList(response.workout.exerciseList);
 			
 			return response.workout;
@@ -288,13 +288,20 @@ $(function($){
 		render : function() {
 			var template = _.template( $("#ex-template").html(), {setobj: this.model});
 			$(this.el).html(template);
+					
+			this.createSelects();
+			var numSets = this.model.setsList.models.length;
+			this.$("select").val(numSets);
 			
 			_.each(this.model.setsList.models, function(set) {
 				this.addNewRow(set);
 			}, this);
-			this.addSet();			
+			
+			if (numSets == 0) {
+				this.addSet();			
+			}
 			this.createNamesList();
-			return this.createSelects(); //.createNamesList();
+			return this;
 		},
 		
 		addNewRow: function (s) {
@@ -385,7 +392,7 @@ $(function($){
 		},
 
 		setup: function() {
-			this.render().createSelects();	
+			this.render();
 			
 			if (this.model.get('workoutId') == 0) {
 				this.addExercise();
@@ -396,6 +403,12 @@ $(function($){
 		render: function() {
 			var template = _.template( $("#form-template").html(), {setobj: this.model});
 			$(this.el).html(template);
+			
+			this.createSelects();
+						
+			var numExercises = this.model.exerciseList.models.length;
+			
+			$("#numEx").val(numExercises);
 			
 			//exercises
 			_.each(this.model.exerciseList.models, function(ex) {				
@@ -425,8 +438,7 @@ $(function($){
 			this.$(".exercise:last-child").remove();
 		},
 		
-		addExercise : function() {
-			
+		addExercise : function() {			
 			this.model.exerciseList.add({exNum: this.model.exerciseList.length+1});
 		},
 		
