@@ -71,12 +71,13 @@ fieldset {
   background: #ddd;
 }
 
-.headerRow .sortable {
+.headerRow .sortable, .headerRow .option {
   text-decoration: underline;  
 }
-.headerRow .sortable:hover {
+.headerRow .sortable:hover, .headerRow .option:hover {
   cursor: pointer;
 }
+
 
 .paginator .first, .paginator .prev, .paginator .next, .paginator .last {
   margin: 5px;

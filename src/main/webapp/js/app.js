@@ -10,7 +10,8 @@ $(function($){
 		update : function(id) {
 			var model;			
 			if (id) {
-	
+				model = new Workout({id: id});
+				model.fetch();
 			} else {
 				model = new Workout();
 				
@@ -37,14 +38,23 @@ $(function($){
 			"notes": "",
 			"workoutId": "0"
 		},
+		
+		urlRoot: "rest/workouts",
 				
 		initialize: function() {
-			this.exList = new ExerciseList();
+			this.exerciseList = new ExerciseList();
+		},
+		
+		parse: function(response) {	
+			alert(JSON.stringify(response.workout));			
+			this.exerciseList = new ExerciseList(response.workout.exerciseList);
+			
+			return response.workout;
 		},
 		
 		toJSON: function() {
 			var object = Backbone.Model.prototype.toJSON.call(this);
-			object['exerciseList'] = this.exList;
+			object['exerciseList'] = this.exerciseList;
 			if (this.get('workoutId') == 0) {
 				delete object['workoutId'];
 			}
@@ -60,9 +70,17 @@ $(function($){
 			"exNum": ""
 		},
 		
-		initialize: function() {
-			this.setsList = new Sets();	
-			this.exercises = new Exercises();
+		initialize: function(options) {
+			if (options.setsList) {
+				this.setsList = new Sets(options.setsList);
+			} else {
+				this.setsList = new Sets();	
+			}
+			if (options.exercises) {
+				this.exercises = new Exercises(options.exercises);
+			} else {
+				this.exercises = new Exercises();
+			}
 		},
 
 		toJSON: function() {
@@ -108,7 +126,8 @@ $(function($){
 	});
 	
 	var ExerciseList = Backbone.Collection.extend({
-		model: Exercise
+		model: Exercise,
+				
 	});
 	
 	var Sets = Backbone.Collection.extend({
@@ -166,17 +185,26 @@ $(function($){
 	var WorkoutItemView = Backbone.View.extend({
 		tagName: 'tr',
 		className: 'workoutRow',
+		
+		events: {
+			"click .option": "edit"
+		},
 
 		render: function() {
 			var template = _.template( $("#workoutItem-template").html(), {setobj: this.model});
 			$(this.el).html(template);
 			return this;
+		},
+		
+		edit: function(e) {
+			app.navigate("update/10", {trigger: true});
 		}
 	});
 
 	var WorkoutListView = Backbone.View.extend({
 		events: {
-			"click .headerRow .sortable" : "sort"
+			"click .headerRow .sortable" : "sort",
+			
 		},
 		
 		initialize : function(options) {
@@ -196,7 +224,7 @@ $(function($){
 		
 		sort: function(e) {
 			var target = e.target;
-			alert(target.childNodes[0].nodeValue);
+			
 			var column = target.childNodes[0].nodeValue;
 			var dir;
 			if (this.model.dir == "asc") {
@@ -258,9 +286,12 @@ $(function($){
 		},
 		
 		render : function() {
-			var template = _.template( $("#ex-template").html(), {});
+			var template = _.template( $("#ex-template").html(), {setobj: this.model});
 			$(this.el).html(template);
 			
+			_.each(this.model.setsList.models, function(set) {
+				this.addNewRow(set);
+			}, this);
 			this.addSet();			
 			this.createNamesList();
 			return this.createSelects(); //.createNamesList();
@@ -346,8 +377,9 @@ $(function($){
 		
 		initialize: function(options) {		
 			_.bindAll(this, 'render', 'addExercise', 'removeExercise', 'addExerciseForm', 'removeExerciseForm', 'createSelects', 'updateNumberOfExercises', 'updateWorkoutValues'); 
-			this.model.exList.bind('add', this.addExerciseForm);
-			this.model.exList.bind('remove', this.removeExerciseForm);
+			this.model.exerciseList.bind('add', this.addExerciseForm);
+			this.model.exerciseList.bind('remove', this.removeExerciseForm);
+			this.model.bind("change", this.render, this);	
 			this.setup();
 			
 		},
@@ -361,10 +393,14 @@ $(function($){
 
 		},
 		
-		render: function() {		
-			var template = _.template( $("#form-template").html(), {});
+		render: function() {
+			var template = _.template( $("#form-template").html(), {setobj: this.model});
 			$(this.el).html(template);
 			
+			//exercises
+			_.each(this.model.exerciseList.models, function(ex) {				
+				this.$(".exDetails").append(new ExerciseForm({model: ex}).render().el);
+			}, this);
 			$("#datepicker").datepicker({ dateFormat: "yy-mm-dd" });
 			
 			return this;
@@ -391,11 +427,11 @@ $(function($){
 		
 		addExercise : function() {
 			
-			this.model.exList.add({exNum: this.model.exList.length+1});
+			this.model.exerciseList.add({exNum: this.model.exerciseList.length+1});
 		},
 		
 		removeExercise : function() {
-			this.model.exList.pop();
+			this.model.exerciseList.pop();
 		},
 		
 		updateNumberOfExercises : function(event) {
