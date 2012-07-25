@@ -29,7 +29,16 @@
 
     <!-- Templates -->
 	<script type="text/template" id="pagination-template">
-		<span class="first"><<</span><span class="prev"><</span><%=setobj.start%> - <%=setobj.start + setobj.models.length%> of <%=setobj.totalCount%><span class="next">></span><span class="last">>></span>
+		<% if (setobj.start > 0) {%>
+			<span class="first"><<</span>
+			<span class="prev"><</span>
+		<% } %>
+		
+		<%=setobj.start+1%> - <%=setobj.start + setobj.models.length%> of <%=setobj.totalCount%>
+		<% if (setobj.start + setobj.models.length < setobj.totalCount) { %>
+			<span class="next">></span>
+			<span class="last">>></span>
+		<% } %>
 	</script>
 	
 	<script type="text/template" id="workoutCollection-template">
@@ -39,7 +48,7 @@
 			<th class="workoutItem sortable">Date</th>
 			<th class="workoutItem sortable">Time</th>
 			<th class="workoutItem">Notes</th>
-			<th class="workoutItem option">Options</th>
+			<th class="workoutItem">Options</th>
 			</tr>
 		</table>
 	</script>
@@ -50,7 +59,7 @@
 		<td class="workoutItem"><%=setobj.get('date')%></td>
 		<td class="workoutItem"><%=setobj.get('time')%></td>
 		<td class="workoutItem"><%=setobj.get('notes')%></td>
-		<td class="workoutItem">edit</td>
+		<td data-id='<%=setobj.get('workoutId')%>' class="workoutItem"><span class="edit">edit</span>|<span class="similar">similar</span></td>
 		
 	</script>
 

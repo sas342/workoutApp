@@ -72,7 +72,11 @@ public class WorkoutJDBCService implements WorkoutService{
 	@Transactional()
 	@Override
 	public List<Workout> getSimilarWorkouts(String userId, int workoutId) {
-		return workoutDao.getSimilarWorkouts(userId, workoutId);
+		List<Workout> list = workoutDao.getSimilarWorkouts(userId, workoutId);
+		for (Workout w : list) {
+			updateWorkoutDetails(w);
+		}
+		return list;
 	}
 	
 	private Workout updateWorkoutDetails(Workout w) {

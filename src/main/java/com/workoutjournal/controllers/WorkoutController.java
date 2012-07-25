@@ -64,6 +64,13 @@ public class WorkoutController extends BaseController{
 		map.put("workout", service.getWorkout(userId, id));
 		return map;
 	}
+
+	@RequestMapping(value="/similar/{id}", method=RequestMethod.GET)
+	public ModelMap getSimilarWorkouts(@PathVariable int id, ModelMap map) {
+
+		map.put("workouts", service.getSimilarWorkouts(userId, id));
+		return map;
+	}
 	
 	@RequestMapping(method=RequestMethod.POST)
 	@ResponseBody

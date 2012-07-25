@@ -4,7 +4,8 @@ $(function($){
 		routes: {
 			"add": "update",
 			"update/:id": "update",
-			"": "workouts"
+			"": "workouts",
+			"similar/:id": "similar"
 
 		},
 
@@ -26,6 +27,19 @@ $(function($){
 			var view = new WorkoutListView({model: workoutCollection});
 			workoutCollection.fetch();
 			$("#content").html(view.el);
+		},
+		
+		similar : function(id) {
+			$.ajax({
+				url: "rest/workouts/similar/"+id,
+				dataType: "json",
+				success: function(data) {
+					var workouts = new WorkoutList(data.workouts);
+					var view = new WorkoutListView({model: workouts});
+					$("#content").html(view.el);
+					view.render();
+				}
+			});
 		}
 
 
@@ -42,14 +56,18 @@ $(function($){
 		
 		urlRoot: "rest/workouts",
 				
-		initialize: function() {
+		initialize: function(options) {
 			this.exerciseList = new ExerciseList();
 		},
 		
-		parse: function(response) {				
-			this.exerciseList = new ExerciseList(response.workout.exerciseList);
+		parse: function(response) {			
+			if (response.workout) {
+				this.exerciseList = new ExerciseList(response.workout.exerciseList);
+				return response.workout;
+			}
 			
-			return response.workout;
+			return response;
+			
 		},
 		
 		toJSON: function() {
@@ -118,9 +136,12 @@ $(function($){
 		},
 		
 		parse : function(response) {
-			this.totalCount = response.totalCount;
-			this.start = response.start;			
-			return response.workouts;
+			if (response.workouts) {
+				this.totalCount = response.totalCount;
+				this.start = response.start;			
+				return response.workouts;
+			}
+			return response;
 		}	
 	
 	});
@@ -187,7 +208,8 @@ $(function($){
 		className: 'workoutRow',
 		
 		events: {
-			"click .option": "edit"
+			"click .edit": "edit",
+			"click .similar": "similar"
 		},
 
 		render: function() {
@@ -197,7 +219,13 @@ $(function($){
 		},
 		
 		edit: function(e) {
-			app.navigate("update/10", {trigger: true});
+			var id = e.target.parentNode.getAttribute('data-id');
+			app.navigate("update/"+id, {trigger: true});
+		},
+		
+		similar: function(e) {
+			var id = e.target.parentNode.getAttribute('data-id');
+			app.navigate("similar/"+id, {trigger: true});
 		}
 	});
 

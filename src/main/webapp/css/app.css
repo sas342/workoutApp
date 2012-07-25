@@ -71,10 +71,10 @@ fieldset {
   background: #ddd;
 }
 
-.headerRow .sortable, .headerRow .option {
+.headerRow .sortable, .workoutRow .edit, .workoutRow .similar{
   text-decoration: underline;  
 }
-.headerRow .sortable:hover, .headerRow .option:hover {
+.headerRow .sortable:hover, .workoutRow .edit:hover, .workoutRow .similar:hover {
   cursor: pointer;
 }
 
