@@ -21,18 +21,24 @@
 	
 	
     <!-- Todo App Interface -->
-	<div id="header"></div>
+	<div id="header"><div class="titleHeader">The Workout Journal</div></div>
 	
-   <div id="content"></div>
+	<div id="title"></div>
+	
+	<div id="content"></div>
    
 	  
 
     <!-- Templates -->
+	<script type="text/template" id="SearchBar-template">
+		<input name="search" type="text"/>
+	</script>
+	
 	<script type="text/template" id="Menu-template">
 		<span data-to="workouts" id="workouts" title="My Workouts">Home</span>
-		<span data-to="add" id="new" title="Add new workout">Add Workout</span>		
-		
+		<span data-to="add" id="new" title="Add new workout">Add Workout</span>			
 	</script>
+	
 	<script type="text/template" id="pagination-template">
 		<% if (setobj.start > 0) {%>
 			<span class="first"><<</span>
@@ -46,9 +52,9 @@
 		<% } %>
 	</script>
 	
-	<script type="text/template" id="workoutCollection-template">		
+	<script type="text/template" id="workoutCollection-template">				
 		<table>
-			<tr class="workoutRow headerRow">
+			<tr class="headerRow">
 			<th class="workoutItem sortable">Name</th>
 			<th class="workoutItem sortable">Date</th>
 			<th class="workoutItem sortable">Time</th>
@@ -71,14 +77,14 @@
 			<div class="tableRow headerRow">
 				<span class="setfield">Reps</span>
 				<span class="setfield">Weight</span>
-				<span class="setfield">Notes</span>
+				<span class="setfield notes">Notes</span>
 			</div>
 			
 		<% _.each(setobj.setsList.models, function(s) { %> 
 			<div class="tableRow">
 			<span class="setfield"><%= s.get('reps')%></span>
 			<span class="setfield"><%= s.get('weight')%></span>
-			<span class="setfield"><%= s.get('notes')%></span>
+			<span class="setfield notes"><%= s.get('notes')%></span>
 			</div>
 		<% }); %>
 			</div>

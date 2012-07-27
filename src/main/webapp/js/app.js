@@ -12,9 +12,10 @@ $(function($){
 		
 		initialize: function(options) {
 			var menu = new MenuView();
-			$("#header").html(menu.render().el);
+			$("#header").append(menu.render().el);
 		},
 		
+				
 		update : function(id) {
 			var model;			
 			if (id) {
@@ -166,7 +167,30 @@ $(function($){
 		model: Set
 	});
 	
-	
+	var SearchView = Backbone.View.extend({
+		
+		className: "searchBar",
+		
+		events: {
+		
+		},
+		
+		initialize: function(options) {
+			_.bindAll(this, 'render', 'search');
+		},
+		
+		render: function() {
+			var template = _.template($("#SearchBar-template").html(), {});
+			$(this.el).html(template);
+			return this;
+		},
+		
+		search: function() {
+		
+		}
+		
+		
+	});
 
 	var MenuView = Backbone.View.extend({
 		tagName: 'div',
@@ -184,6 +208,7 @@ $(function($){
 		render: function(options) {
 			var template = _.template($("#Menu-template").html(), {});
 			$(this.el).html(template);
+			$(this.el).append(new SearchView().render().el);
 			return this;
 		},
 		

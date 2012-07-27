@@ -6,6 +6,13 @@ body {
   display: block;
   height: 50px;
   margin-right: 50px;
+  margin-left: 50px;
+}
+
+.titleHeader {
+  float: left;
+  font-size: 18pt;
+  color: #043afb;
 }
 
 .menuHeader {
@@ -101,7 +108,13 @@ fieldset {
   display: table;
 }
 
+.workoutRow:hover {
+  background-color: #dddddd;
+}
+
 .headerRow {
+  border-bottom: thin solid #7a7a7a;
+  display: table;
   background: #043afb; /*#7a7a7a;*/
   color: white;
 }
@@ -130,6 +143,10 @@ fieldset {
   display: inline-table;
 }
 
+.tableRow .notes {
+  width: 200px !important;
+}
+
 .exDetailsSection {
   /**margin-left: 100px;  */
   margin: 20px 0;
@@ -137,7 +154,9 @@ fieldset {
 
 
 .tableRow {
-  border: thin solid #7a7a7a;
+  border-bottom: thin solid #7a7a7a;
+  border-left: thin solid #7a7a7a;
+  border-right: thin solid #7a7a7a;
   display: table;
   width: 500px;
 }
@@ -150,3 +169,14 @@ fieldset {
   border: thin solid #7a7a7a;
   border-spacing: 0px;
 }
+
+.searchBar {
+  display: inline;
+  margin-left: 20px;
+}
+
+.searchBar input {
+  border-radius: 4px 4px 4px 4px;
+  border: thin solid black;
+  width: 200px;
+ }
