@@ -5,16 +5,22 @@ $(function($){
 			"add": "update",
 			"update/:id": "update",
 			"": "workouts",
+			"workouts": "workouts",
 			"similar/:id": "similar"
 
 		},
-
+		
+		initialize: function(options) {
+			var menu = new MenuView();
+			$("#header").html(menu.render().el);
+		},
+		
 		update : function(id) {
 			var model;			
 			if (id) {
 				model = new Workout({id: id});
 				model.fetch();
-			} else {alert('new');
+			} else {
 				model = new Workout();
 				
 			}
@@ -57,7 +63,12 @@ $(function($){
 		urlRoot: "rest/workouts",
 				
 		initialize: function(options) {
-			this.exerciseList = new ExerciseList();
+			if (options && options.exerciseList) {
+				this.exerciseList = new ExerciseList(options.exerciseList);
+			} else {
+				this.exerciseList = new ExerciseList();	
+			}
+			
 		},
 		
 		parse: function(response) {			
@@ -89,12 +100,12 @@ $(function($){
 		},
 		
 		initialize: function(options) {
-			if (options.setsList) {
+			if (options && options.setsList) {
 				this.setsList = new Sets(options.setsList);
 			} else {
 				this.setsList = new Sets();	
 			}
-			if (options.exercises) {
+			if (options && options.exercises) {
 				this.exercises = new Exercises(options.exercises);
 			} else {
 				this.exercises = new Exercises();
@@ -157,6 +168,37 @@ $(function($){
 	
 	
 
+	var MenuView = Backbone.View.extend({
+		tagName: 'div',
+		
+		className: "menuHeader",
+		
+		events: {
+			"click span": "navigate"
+		},
+		
+		initialize: function(options) {
+			_.bindAll(this, 'render', 'navigate', 'clear');
+		},
+		
+		render: function(options) {
+			var template = _.template($("#Menu-template").html(), {});
+			$(this.el).html(template);
+			return this;
+		},
+		
+		navigate: function(e) {
+			this.clear();			
+			var to = e.target.getAttribute('data-to');
+			this.$('span[data-to="'+to+'"]').addClass('selected');
+			app.navigate(to, {trigger: true});
+		},
+		
+		clear: function() {
+			this.$('span').removeClass('selected');
+		}
+	});
+	
 	var PaginatorView = Backbone.View.extend({
 		className: "paginator",
 		
@@ -209,9 +251,15 @@ $(function($){
 		
 		events: {
 			"click .edit": "edit",
-			"click .similar": "similar"
+			"click .similar": "similar",
+			"click ": "showExDetails"
 		},
 
+		initialize: function(options) {
+			this.attributes = {'data-id': this.model.get('workoutId')}
+			$(this.el).attr(this.attributes);
+		},
+		
 		render: function() {
 			var template = _.template( $("#workoutItem-template").html(), {setobj: this.model});
 			$(this.el).html(template);
@@ -219,21 +267,44 @@ $(function($){
 		},
 		
 		edit: function(e) {
-			var id = e.target.parentNode.getAttribute('data-id');
+			var id = this.attributes['data-id'];
 			app.navigate("update/"+id, {trigger: true});
 		},
 		
 		similar: function(e) {
-			var id = e.target.parentNode.getAttribute('data-id');
+			var id = this.attributes['data-id'];
 			app.navigate("similar/"+id, {trigger: true});
+		},
+		
+		showExDetails: function(e) {
+			$('#exDetails').show();
+			$('#exercises').empty();
+			_.each(this.model.exerciseList.models, function(ex) {	
+				$('#exercises').append(new ExDetailsView({model: ex}).render().el);
+			}, this);
+			
+		}
+	});
+	
+	var ExDetailsView = Backbone.View.extend({
+		
+		initialize: function(options) {
+			_.bindAll(this, 'render');			
+		},
+		
+		render: function() {
+			var template = _.template($("#exDetails-template").html(), {setobj: this.model});
+			$(this.el).html(template);
+			return this;
 		}
 	});
 
 	var WorkoutListView = Backbone.View.extend({
 		events: {
-			"click .headerRow .sortable" : "sort",
-			
+			"click .headerRow .sortable" : "sort"			
 		},
+		
+		className: 'workoutsPage',
 		
 		initialize : function(options) {
 			_.bindAll(this, 'render');	
@@ -247,6 +318,7 @@ $(function($){
 				this.$('tbody').append(new WorkoutItemView({model: w}).render().el);
 			}, this);
 			this.$('table').append(new PaginatorView({model: this.model}).render().el);
+			this.$('#exDetails').hide();
 			return this;
 		},
 		
