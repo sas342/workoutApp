@@ -25,6 +25,11 @@ body {
   color: #043afb !important;
 }
 
+#content {
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
 #workouts, #new{
   float: left;
   width: 100px;
@@ -161,9 +166,7 @@ fieldset {
   width: 500px;
 }
 
-.workoutsPage {
-  margin-left: 25px;
-}
+
 
 .workoutsPage table {
   border: thin solid #7a7a7a;
