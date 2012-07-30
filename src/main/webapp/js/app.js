@@ -1,5 +1,23 @@
 $(function($){
 
+	/** Module to handle loading views into main content panel.  Will close previous view
+	  http://lostechies.com/derickbailey/2011/09/15/zombies-run-managing-page-transitions-in-backbone-apps/ 
+	 */
+	function AppView() {
+		this.currentObj;
+		
+		return {
+			show : function(view) {
+				if (this.currentObj) {
+					this.currentObj.close();
+				}
+				this.currentObj = view;
+				
+				$("#content").html(this.currentObj.el);
+			}
+		}
+	};
+	
 	var Workspace = Backbone.Router.extend({
 		routes: {
 			"add": "update",
@@ -14,6 +32,7 @@ $(function($){
 		initialize: function(options) {
 			var menu = new MenuView();
 			$("#header").append(menu.render().el);
+			this.AppView = new AppView();
 		},
 		
 				
@@ -39,7 +58,7 @@ $(function($){
 			} else {
 				workoutCollection.fetch();
 			}
-			$("#content").html(view.el);
+			this.AppView.show(view);
 		},
 		
 		similar : function(id) {
@@ -49,7 +68,8 @@ $(function($){
 				success: function(data) {
 					var workouts = new WorkoutList(data.workouts);
 					var view = new WorkoutListView({model: workouts});
-					$("#content").html(view.el);
+					this.AppView.show(view);
+					//$("#content").html(view.el);
 					view.render();
 				}
 			});
@@ -641,7 +661,11 @@ $(function($){
 		
 	});
 
-	
+	/** add new method to backbone view object that all new views will inherit */
+	Backbone.View.prototype.close = function() {
+		this.remove();
+		this.unbind();
+	};
 	
 	var app = new Workspace();
 	Backbone.history.start();

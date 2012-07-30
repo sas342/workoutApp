@@ -183,3 +183,14 @@ fieldset {
   border: thin solid black;
   width: 200px;
  }
+ 
+ .searchBar .close {
+   position: absolute;
+   right: 10px;
+   line-height: 25px;
+   font-family: arial;   
+ }
+ 
+ .searchBar .close:hover {
+   cursor: pointer;
+ }
