@@ -6,6 +6,7 @@ $(function($){
 			"update/:id": "update",
 			"": "workouts",
 			"workouts": "workouts",
+			"workouts/:name": "workouts",
 			"similar/:id": "similar"
 
 		},
@@ -29,10 +30,15 @@ $(function($){
 			var form = new WorkoutForm({model: model,  el: $("#content")});
 		},
 	
-		workouts : function() {
+		workouts : function(name) {
 			var workoutCollection = new WorkoutList();
 			var view = new WorkoutListView({model: workoutCollection});
-			workoutCollection.fetch();
+			if (name) {
+				$('#header .searchBar input').val(name);
+				workoutCollection.searchByName(name);
+			} else {
+				workoutCollection.fetch();
+			}
 			$("#content").html(view.el);
 		},
 		
@@ -140,7 +146,13 @@ $(function($){
 	var WorkoutList = Backbone.Collection.extend({
 		model: Workout,
 		
-		url: "rest/workouts.json",
+		url: function() {
+			if(this.name) {
+				return "rest/workouts/search/"+this.name+".json";
+			} else {
+				return "rest/workouts.json";
+			}
+		},
 
 		initialize: function(options) {
 			this.orderBy = "Name";
@@ -154,7 +166,12 @@ $(function($){
 				return response.workouts;
 			}
 			return response;
-		}	
+		},
+
+		searchByName : function(name) {
+			this.name = name;
+			this.fetch();
+		}
 	
 	});
 	
@@ -172,11 +189,12 @@ $(function($){
 		className: "searchBar",
 		
 		events: {
-		
+			"keypress input": "keypressed",
+			"click .close": "close"
 		},
 		
 		initialize: function(options) {
-			_.bindAll(this, 'render', 'search');
+			_.bindAll(this, 'render', 'search', 'close');
 		},
 		
 		render: function() {
@@ -185,8 +203,20 @@ $(function($){
 			return this;
 		},
 		
-		search: function() {
+		keypressed: function(e) {
+			if (e.keyCode == 13) {
+				this.search(e.target.value);
+			}
+			
+		},
 		
+		search: function(name) {
+			app.navigate("workouts/"+name, {trigger: true});
+		},
+		
+		close: function(name) {
+			this.$('input').val('');
+			app.navigate("workouts", {trigger: true});
 		}
 		
 		

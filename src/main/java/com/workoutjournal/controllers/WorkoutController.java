@@ -54,7 +54,12 @@ public class WorkoutController extends BaseController{
 		params.setAsc(createOrderBy(dir));
 		params.setOrderColumn(orderBy);
 		
-		map.put("workouts", service.getWorkouts(userId, searchStr, params));
+		WorkoutList list = service.getWorkouts(userId, searchStr, params);
+		map.put("size", list.getSize());
+		map.put("start", list.getStart());
+		map.put("totalCount", list.getTotalCount());
+		map.put("workouts", list.getWorkouts());
+		
 		return map;
 	}
 	

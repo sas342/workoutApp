@@ -24,8 +24,8 @@ public class WorkoutJDBCDao {
 	}
 	
 	public WorkoutList getWorkouts(String userId, String name, int start, int size, String orderBy, boolean asc) {
-		String sql = "select * from workout where user_id=? and name like ? order by "+getOrderBy(orderBy, asc);
-		List<Workout> list =  template.query(sql, new WorkoutRowWrapper(), userId, "%"+name+"%");
+		String sql = "select a.* from workout a, exercise b, exercises c where a.user_id=? and b.workout_id=a.workout_id and b.ex_name=c.id and (a.name like ? or c.name like ?) order by "+getOrderBy(orderBy, asc);
+		List<Workout> list =  template.query(sql, new WorkoutRowWrapper(), userId, "%"+name+"%", "%"+name+"%");
 		WorkoutList wlist = new WorkoutList();
 		wlist.setWorkouts(generateSubList(list, start, size));
 		wlist.setSize(wlist.getWorkouts().size());
