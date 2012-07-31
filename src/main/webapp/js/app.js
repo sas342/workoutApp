@@ -1,7 +1,8 @@
 $(function($){
 
 	/** Module to handle loading views into main content panel.  Will close previous view
-	  http://lostechies.com/derickbailey/2011/09/15/zombies-run-managing-page-transitions-in-backbone-apps/ 
+	  http://lostechies.com/derickbailey/2011/09/15/zombies-run-managing-page-transitions-in-backbone-apps/ and
+	  http://stackoverflow.com/questions/7567404/backbone-js-repopulate-or-recreate-the-view/7607853#7607853
 	 */
 	function AppView() {
 		this.currentObj;
@@ -9,7 +10,7 @@ $(function($){
 		return {
 			show : function(view) {
 				if (this.currentObj) {
-					this.currentObj.close();
+					this.currentObj.dispose();
 				}
 				this.currentObj = view;
 				
@@ -42,11 +43,11 @@ $(function($){
 				model = new Workout({id: id});
 				model.fetch();
 			} else {
-				model = new Workout();
-				
+				model = new Workout();				
 			}
-
-			var form = new WorkoutForm({model: model,  el: $("#content")});
+			var form = new WorkoutForm({model: model});			
+			this.AppView.show(form);
+			form.render();
 		},
 	
 		workouts : function(name) {
@@ -62,14 +63,14 @@ $(function($){
 		},
 		
 		similar : function(id) {
+			var that = this;
 			$.ajax({
 				url: "rest/workouts/similar/"+id,
 				dataType: "json",
 				success: function(data) {
 					var workouts = new WorkoutList(data.workouts);
 					var view = new WorkoutListView({model: workouts});
-					this.AppView.show(view);
-					//$("#content").html(view.el);
+					that.AppView.show(view);					
 					view.render();
 				}
 			});
@@ -204,13 +205,45 @@ $(function($){
 		model: Set
 	});
 	
-	var SearchView = Backbone.View.extend({
+	/** Base view all views should extend */
+	var BaseView = function(options) {
+		this.bindings = [];
+		Backbone.View.apply(this, [options]);
+	};
+	
+	/** have BaseView extend Backbone.View */	
+	_.extend(BaseView.prototype, Backbone.View.prototype, {
+		
+		bindTo: function(model, ev, callback) {
+			model.bind(ev, callback, this);
+			this.bindings.push({model: model, ev: ev, callback: callback});
+		},
+		
+		unbindFromAll: function() {
+			_.each(this.bindings, function (binding) {
+				binding.model.unbind(binding.ev, binding.callback);
+			});
+			this.bindings = [];
+		},
+		
+		dispose: function() {
+			this.unbindFromAll();
+			this.unbind();
+			this.remove();
+		}
+	
+	});
+	
+	BaseView.extend = Backbone.View.extend;
+	
+	var SearchView = BaseView.extend({
 		
 		className: "searchBar",
 		
 		events: {
 			"keypress input": "keypressed",
-			"click .close": "close"
+			"click .close": "close",
+			"click ": "removeText"
 		},
 		
 		initialize: function(options) {
@@ -230,6 +263,11 @@ $(function($){
 			
 		},
 		
+		removeText: function() {
+			this.$('input').val('');
+			this.$('input').removeClass("gray");
+		},
+		
 		search: function(name) {
 			app.navigate("workouts/"+name, {trigger: true});
 		},
@@ -242,7 +280,7 @@ $(function($){
 		
 	});
 
-	var MenuView = Backbone.View.extend({
+	var MenuView = BaseView.extend({
 		tagName: 'div',
 		
 		className: "menuHeader",
@@ -274,7 +312,7 @@ $(function($){
 		}
 	});
 	
-	var PaginatorView = Backbone.View.extend({
+	var PaginatorView = BaseView.extend({
 		className: "paginator",
 		
 		events: {
@@ -320,7 +358,7 @@ $(function($){
 		
 	});
 	
-	var WorkoutItemView = Backbone.View.extend({
+	var WorkoutItemView = BaseView.extend({
 		tagName: 'tr',
 		className: 'workoutRow',
 		
@@ -347,11 +385,13 @@ $(function($){
 		},
 		
 		similar: function(e) {
-			var id = this.attributes['data-id'];
-			app.navigate("similar/"+id, {trigger: true});
+			e.stopImmediatePropagation();
+			
+			var id = this.attributes['data-id'];			
+			app.navigate("similar/"+id, {trigger: true});			
 		},
 		
-		showExDetails: function(e) {
+		showExDetails: function(e) {			
 			$('#exDetails').show();
 			$('#exercises').empty();
 			_.each(this.model.exerciseList.models, function(ex) {	
@@ -361,7 +401,7 @@ $(function($){
 		}
 	});
 	
-	var ExDetailsView = Backbone.View.extend({
+	var ExDetailsView = BaseView.extend({
 		
 		initialize: function(options) {
 			_.bindAll(this, 'render');			
@@ -374,16 +414,18 @@ $(function($){
 		}
 	});
 
-	var WorkoutListView = Backbone.View.extend({
+	var WorkoutListView = BaseView.extend({
 		events: {
-			"click .headerRow .sortable" : "sort"			
+			"click .headerRow .sortable" : "sort",
+			"click .workoutRow" : "updateSelection"
 		},
 		
 		className: 'workoutsPage',
 		
 		initialize : function(options) {
 			_.bindAll(this, 'render');	
-			this.model.bind("reset", this.render, this);			
+			this.bindTo(this.model, 'reset', this.render);
+			//this.model.bind("reset", this.render, this);			
 		},
 
 		render: function() {
@@ -411,6 +453,11 @@ $(function($){
 			this.model.dir = dir;
 			this.model.orderBy = column;
 			this.model.fetch({data: {"sortField": column, "sortDir": dir}});
+		},
+		
+		updateSelection: function(e) {
+			this.$('.workoutRow').removeClass("selected");
+			this.$(e.target.parentNode).addClass("selected");
 		}
 
 	});
@@ -419,7 +466,7 @@ $(function($){
 	*  Form to edit a workout set 
 	*/
 	
-	var SetsForm = Backbone.View.extend({
+	var SetsForm = BaseView.extend({
 		tagName: 'tr',
 		
 		events: {
@@ -447,7 +494,7 @@ $(function($){
 	/**
 	* Form to edit workout exercise
 	*/
-	var ExerciseForm = Backbone.View.extend({
+	var ExerciseForm = BaseView.extend({
 		events : {
 			"change select": "updateNumberOfSetRows",
 			"change input": "updateExName"
@@ -455,8 +502,11 @@ $(function($){
 		
 		initialize: function(options) {
 			_.bindAll(this, 'render', 'addNewRow', 'removeRow', 'addSet', 'removeSet', 'createSelects','updateNumberOfSetRows', 'createNamesList', 'updateExName');
-			this.model.setsList.bind('add', this.addNewRow);
-			this.model.setsList.bind('remove', this.removeRow);
+			this.bindTo(this.model.setsList, 'add', this.addNewRow);
+			this.bindTo(this.model.setsList, 'remove', this.removeRow);
+			
+			//this.model.setsList.bind('add', this.addNewRow);
+			//this.model.setsList.bind('remove', this.removeRow);
 			
 		},
 		
@@ -548,7 +598,7 @@ $(function($){
 	
 	
 	//Form to edit workout
-	var WorkoutForm = Backbone.View.extend({
+	var WorkoutForm = BaseView.extend({
 		
 		events: {
 			"change #numEx": "updateNumberOfExercises",
@@ -559,20 +609,14 @@ $(function($){
 		
 		initialize: function(options) {		
 			_.bindAll(this, 'render', 'addExercise', 'removeExercise', 'addExerciseForm', 'removeExerciseForm', 'createSelects', 'updateNumberOfExercises', 'updateWorkoutValues'); 
-			this.model.exerciseList.bind('add', this.addExerciseForm);
-			this.model.exerciseList.bind('remove', this.removeExerciseForm);
-			this.model.bind("change", this.render, this);	
-			this.setup();
+			this.bindTo(this.model.exerciseList, 'add', this.addExerciseForm);
+			this.bindTo(this.model.exerciseList, 'remove', this.removeExerciseForm);
+			this.bindTo(this.model, 'change', this.render);
 			
-		},
-
-		setup: function() {
-			this.render();
+			//this.model.exerciseList.bind('add', this.addExerciseForm);
+			//this.model.exerciseList.bind('remove', this.removeExerciseForm);
+			//this.model.bind("change", this.render, this);	
 			
-			if (this.model.get('workoutId') == 0) {
-				this.addExercise();
-			}
-
 		},
 		
 		render: function() {
@@ -590,6 +634,10 @@ $(function($){
 				this.$(".exDetails").append(new ExerciseForm({model: ex}).render().el);
 			}, this);
 			$("#datepicker").datepicker({ dateFormat: "yy-mm-dd" });
+			
+			if (this.model.get('workoutId') == 0) {
+				this.addExercise();
+			}
 			
 			return this;
 		},
@@ -660,12 +708,7 @@ $(function($){
 		}
 		
 	});
-
-	/** add new method to backbone view object that all new views will inherit */
-	Backbone.View.prototype.close = function() {
-		this.remove();
-		this.unbind();
-	};
+	
 	
 	var app = new Workspace();
 	Backbone.history.start();
