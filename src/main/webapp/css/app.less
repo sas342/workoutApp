@@ -1,0 +1,229 @@
+body {
+  background: #e8e8e2;
+}
+
+/** Header Bar info */
+#header {
+  display: block;
+  height: 50px;
+  width: 1010px;
+  margin-left: 50px;
+  
+	.titleHeader {
+		float: left;
+		font-size: 18pt;
+		color: #043afb;
+	}
+	
+	.menuHeader {
+		float: right;
+		height: 40px;
+		position: relative;
+		
+		.selected {
+			 color: #043afb !important;
+		}
+		
+		span:hover {
+			cursor: pointer;
+		}
+		
+		.searchBar {
+			display: inline;
+			margin-left: 20px;
+  
+			.gray {
+			  color: gray;
+			}
+			
+			input {
+				border-radius: 4px 4px 4px 4px;
+				border: thin solid black;
+				width: 200px;
+			}
+			  
+			.close {
+				position: absolute;
+				right: 10px;
+				line-height: 25px;
+				font-family: arial; 
+			}
+			  
+			.close:hover {
+				cursor: pointer;
+			}
+		}
+
+
+	}
+	
+	
+}
+
+
+
+
+#content {
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+#workouts, #new{
+  float: left;
+  width: 100px;
+  color: black;  
+  display: inline-block;
+  text-align: center;
+}
+
+#workouts:hover, #new:hover {
+  color: #043afb;
+}
+
+/** workout form */
+fieldset {
+	border-radius: 6px 6px 6px 6px;
+	border-color: #043afb;
+}
+
+#workoutForm {
+	margin-left: 15px;
+	
+	fieldset {
+		background: #ddd;
+	}
+}
+
+
+.formLabel {
+	width: 100px;
+	display: inline-block;
+	margin-top: 10px;
+}
+
+
+
+.submitBtn{
+	margin-top: 10px;
+}	
+
+.exSelect {
+	margin-bottom: 20px;
+}
+
+/** exercise details in form */
+.exDetails {
+	fieldset {
+		margin-top: 20px;
+		background: #ddd !important;
+	}
+	
+	.exerciseForm {
+		margin: 20px;
+		
+		table {
+			margin-top: 10px;
+		}
+		
+		.selectLbl {
+			margin-right: 10px;	
+			width: 100px;
+			margin-left: 20px;
+		}
+		
+		.exNameLbl {
+			margin-right: 10px;
+		}
+		
+		.formHeaderRow {
+			background: #043afb; /*#7a7a7a;*/
+			border-spacing: 0px !important;
+			color: white;
+		}
+		
+		.notes {
+			width: 300px;
+		}
+	}
+	
+}
+
+/** workouts page */
+.workoutsPage table {
+  border: thin solid #7a7a7a;
+  border-spacing: 0px;
+}
+
+/** workout table */
+.workoutRow, .headerRow {
+  border-bottom: thin solid #7a7a7a;
+  display: table;
+  
+	.workoutItem {
+		width: 200px;
+		text-align: center;
+	}
+}
+
+.workoutRow:hover {
+  background-color: #82A9FF; /**#dddddd;*/
+}
+
+tbody .selected{
+  background-color: #82A9FF; /**#dddddd;*/
+}
+
+.headerRow {
+  border-bottom: thin solid #7a7a7a;
+  display: table;
+  background: #043afb; /*#7a7a7a;*/
+  color: white;
+}
+
+.headerRow .sortable, .workoutRow .edit, .workoutRow .similar{
+  text-decoration: underline;  
+}
+.headerRow .sortable:hover, .workoutRow .edit:hover, .workoutRow .similar:hover {
+  cursor: pointer;
+}
+
+/** exercise details section*/
+.exDetailsSection {  
+  margin: 20px 0;
+  
+	.setfield {
+		width: 100px;
+		display: inline-table;
+	}
+  
+	.tableRow {
+		border-bottom: thin solid #7a7a7a;
+		border-left: thin solid #7a7a7a;
+		border-right: thin solid #7a7a7a;
+		display: table;
+		width: 500px;
+		
+		.notes {
+			width: 200px !important;
+		}
+	}
+	
+}
+
+
+/**  Paginator widget */
+.paginator {
+	text-align: center;
+}
+
+.paginator .first, .paginator .prev, .paginator .next, .paginator .last {
+  margin: 5px;
+}
+
+.paginator .first:hover, .paginator .prev:hover, .paginator .next:hover, .paginator .last:hover {
+  cursor: pointer;
+}
+
+
+
+
