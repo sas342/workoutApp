@@ -64,7 +64,7 @@ public class WorkoutServiceTest extends AbstractTransactionalTestNGSpringContext
 		workout.setName("TestWorkout");
 		workout.setDate(java.util.Calendar.getInstance().getTime());
 		workout.setNotes("Test Notes");
-		workout.setTime(10);
+		workout.setTime("1000");
 		
 		List<Exercise> el = new ArrayList<Exercise>();
 		Exercise e = new Exercise();

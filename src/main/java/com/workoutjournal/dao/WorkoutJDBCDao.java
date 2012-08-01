@@ -144,7 +144,11 @@ public class WorkoutJDBCDao {
 				workout.setDate(rs.getDate("date"));
 				workout.setWorkoutId(rs.getInt("workout_id"));
 				workout.setName(rs.getString("name"));
-				workout.setTime(rs.getInt("time"));
+				java.sql.Time time = rs.getTime("time");
+				if (time != null) {
+					workout.setTime(time.toString());
+				}
+				
 				workout.setNotes(rs.getString("notes"));
 				return workout;
 			}

@@ -24,7 +24,7 @@ public class WorkoutDAOTest extends AbstractTransactionalTestNGSpringContextTest
 		workout.setName("TestWorkout");
 		workout.setDate(java.util.Calendar.getInstance().getTime());
 		workout.setNotes("Test Notes");
-		workout.setTime(10);
+		workout.setTime("1000");
 				
 		Workout inserted = dao.updateWorkouts("sas342", workout);
 		Assert.assertNotNull(inserted);
@@ -46,7 +46,7 @@ public class WorkoutDAOTest extends AbstractTransactionalTestNGSpringContextTest
 		workout.setName("TestWorkout");
 		workout.setDate(java.util.Calendar.getInstance().getTime());
 		workout.setNotes("Test Notes");
-		workout.setTime(10);				
+		workout.setTime("1000");				
 		dao.updateWorkouts("sas342", workout);
 		
 		WorkoutList workouts = dao.getWorkouts("sas342","TestWorkout", 0, 10, "name",true);
@@ -57,7 +57,7 @@ public class WorkoutDAOTest extends AbstractTransactionalTestNGSpringContextTest
 		workout = workouts.getWorkouts().get(0);
 		Assert.assertEquals(workout.getName(), "TestWorkout");
 		Assert.assertNotNull(workout.getDate());
-		Assert.assertEquals(workout.getTime().intValue(), 10);
+		Assert.assertEquals(workout.getTime(), "00:10:00");
 		Assert.assertEquals(workout.getNotes(), "Test Notes");
 	}
 	

@@ -29,7 +29,7 @@ public class Workout implements Serializable {
     private List<Exercise> exerciseList;
 
     
-    private Integer time=0;
+    private String time;
     
     
     private String notes;
@@ -91,12 +91,12 @@ public class Workout implements Serializable {
 //        this.userId = userId;
 //    }
     
-    public void setTime(Integer time){
+    public void setTime(String time){
     	this.time = time;
     }
     
     @XmlAttribute(name="time")
-    public Integer getTime(){
+    public String getTime(){
     	return time;
     }
     
