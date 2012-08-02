@@ -358,10 +358,9 @@ $(function($){
 		
 	});
 	
-	var WorkoutItemView = BaseView.extend({
-		tagName: 'tr',
+	var WorkoutItemView = BaseView.extend({		
 		className: 'workoutRow',
-		
+				
 		events: {
 			"click .edit": "edit",
 			"click .similar": "similar",
@@ -424,17 +423,16 @@ $(function($){
 		
 		initialize : function(options) {
 			_.bindAll(this, 'render');	
-			this.bindTo(this.model, 'reset', this.render);
-			//this.model.bind("reset", this.render, this);			
+			this.bindTo(this.model, 'reset', this.render);						
 		},
 
 		render: function() {
 			var template = _.template($("#workoutCollection-template").html(), {});
 			$(this.el).html(template);
 			_.each(this.model.models, function(w) {				
-				this.$('tbody').append(new WorkoutItemView({model: w}).render().el);
+				this.$('.wtable').append(new WorkoutItemView({model: w}).render().el);
 			}, this);
-			this.$('table').append(new PaginatorView({model: this.model}).render().el);
+			this.$('.wtable').append(new PaginatorView({model: this.model}).render().el);
 			this.$('#exDetails').hide();
 			return this;
 		},

@@ -1,3 +1,10 @@
+
+@midBlue: #0439fb;
+@darkBlue: #0225a1;
+@highlightBlue: #86a0fd;
+@lightBlue: #afc0fe;
+
+
 body {
   background: #e8e8e2;
 }
@@ -12,7 +19,7 @@ body {
 	.titleHeader {
 		float: left;
 		font-size: 18pt;
-		color: #043afb;
+		color: @midBlue;
 	}
 	
 	.menuHeader {
@@ -21,7 +28,7 @@ body {
 		position: relative;
 		
 		.selected {
-			 color: #043afb !important;
+			 color: @midBlue !important;
 		}
 		
 		span:hover {
@@ -77,13 +84,13 @@ body {
 }
 
 #workouts:hover, #new:hover {
-  color: #043afb;
+  color: @midBlue;
 }
 
 /** workout form */
 fieldset {
 	border-radius: 6px 6px 6px 6px;
-	border-color: #043afb;
+	border-color: @midBlue;
 }
 
 #workoutForm {
@@ -113,6 +120,9 @@ fieldset {
 
 /** exercise details in form */
 .exDetails {
+	float: right;
+	width: 50%;
+	
 	fieldset {
 		margin-top: 20px;
 		background: #ddd !important;
@@ -136,7 +146,7 @@ fieldset {
 		}
 		
 		.formHeaderRow {
-			background: #043afb; /*#7a7a7a;*/
+			background: @midBlue;
 			border-spacing: 0px !important;
 			color: white;
 		}
@@ -149,35 +159,101 @@ fieldset {
 }
 
 /** workouts page */
-.workoutsPage table {
-  border: thin solid #7a7a7a;
-  border-spacing: 0px;
+
+.workoutsPage {
+  
+  .wtable {
+	display: block;
+	width: 800px;
+	border: thin solid #7a7a7a;
+	-webkit-box-shadow: 5px 5px 7px #888;
+	-webkit-border-bottom-right-radius: 15px;
+	-webkit-border-bottom-left-radius: 15px;
+	-moz-box-shadow: 5px 5px 7px #888;
+	-moz-border-bottom-right-radius: 15px;
+	-moz-border-bottom-left-radius: 15px;
+	
+	.selected{
+	  background-color: @highlightBlue; 
+	}
+  }
+  
+  .workoutHeader {
+	line-height: 30px;
+	vertical-align: middle;
+	text-align: center;
+	background: @midBlue;
+	color: white;
+	font-size: 14pt;
+	font-family: arial;
+	display: block;
+  }
+  
+  .exDetails {
+	border: thin solid #7a7a7a;
+	-webkit-box-shadow: 5px 5px 7px #888;
+	-webkit-border-bottom-right-radius: 15px;
+	-webkit-border-bottom-left-radius: 15px;
+	-moz-box-shadow: 5px 5px 7px #888;
+	-moz-border-bottom-right-radius: 15px;
+	-moz-border-bottom-left-radius: 15px;
+  }
+  .exDetailsHeading {
+	line-height: 20px;
+	vertical-aling: middle;
+	text-align: center;
+	background: @midBlue;
+	color: white;
+	font-size: 14pt;
+	font-family: arial;
+	display: block;
+	width: 520px;
+  }
+  
+  .exTable {
+	width: 520px;
+	border: thin solid #7a7a7a;
+	-webkit-box-shadow: 5px 5px 7px #888;
+	-webkit-border-bottom-right-radius: 15px;
+	-webkit-border-bottom-left-radius: 15px;
+	-moz-box-shadow: 5px 5px 7px #888;
+	-moz-border-bottom-right-radius: 15px;
+	-moz-border-bottom-left-radius: 15px;
+	
+	#exercises {
+		padding: 10px;
+	}
+	
+	.exName {
+		font-weight: bold;
+		color: @midBlue;			
+	}
+  }
+
 }
 
+
 /** workout table */
-.workoutRow, .headerRow {
-  border-bottom: thin solid #7a7a7a;
+.workoutRow, .headerRow {  
   display: table;
+  background: white;
   
 	.workoutItem {
 		width: 200px;
 		text-align: center;
+		display: inline-table;
 	}
 }
 
 .workoutRow:hover {
-  background-color: #82A9FF; /**#dddddd;*/
+  background-color: @highlightBlue;
 }
 
-tbody .selected{
-  background-color: #82A9FF; /**#dddddd;*/
-}
 
 .headerRow {
   border-bottom: thin solid #7a7a7a;
   display: table;
-  background: #043afb; /*#7a7a7a;*/
-  color: white;
+  background: @lightBlue;
 }
 
 .headerRow .sortable, .workoutRow .edit, .workoutRow .similar{
@@ -189,17 +265,25 @@ tbody .selected{
 
 /** exercise details section*/
 .exDetailsSection {  
-  margin: 20px 0;
-  
+	width: 500px;	
+	border: thin solid #7a7a7a;
+	margin-bottom: 15px;
+	-webkit-box-shadow: 5px 5px 7px #888;
+	-moz-box-shadow: 5px 5px 7px #888;
+	/**
+	-webkit-border-bottom-right-radius: 15px;
+	-webkit-border-bottom-left-radius: 15px;
+	
+	-moz-border-bottom-right-radius: 15px;
+	-moz-border-bottom-left-radius: 15px;
+	*/
+	
 	.setfield {
 		width: 100px;
 		display: inline-table;
 	}
   
-	.tableRow {
-		border-bottom: thin solid #7a7a7a;
-		border-left: thin solid #7a7a7a;
-		border-right: thin solid #7a7a7a;
+	.tableRow {			
 		display: table;
 		width: 500px;
 		

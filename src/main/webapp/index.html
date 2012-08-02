@@ -53,28 +53,33 @@
 		<% } %>
 	</script>
 	
-	<script type="text/template" id="workoutCollection-template">				
-		<table>
-			<tr class="headerRow">
-			<th class="workoutItem sortable">Name</th>
-			<th class="workoutItem sortable">Date</th>
-			<th class="workoutItem sortable">Time</th>
-			<th class="workoutItem">Notes</th>
-			<th class="workoutItem">Options</th>
-			</tr>
-		</table>
+	<script type="text/template" id="workoutCollection-template">	
+		
+		<div class="wtable">
+		<div class="workoutHeader">Workouts</div>		
+		<div class="headerRow">				
+				<span class="workoutItem sortable">Name</span>
+				<span class="workoutItem sortable">Date</span>
+				<span class="workoutItem sortable">Time</span>
+				<span class="workoutItem">Notes</span>
+		</div>			
+		</div>
 		
 		<div id="exDetails">
 			<hr/>
-			<span class="exDetailsHeading">Exercise Details</span>
-			<div id="exercises"/>
 			
+			<div class="exTable">
+				<span class="exDetailsHeading">Exercises</span>
+				<div id="exercises"/>
+			</div>
 		</div>
+		
+		
 	</script>
 	
 	<script type="text/template" id="exDetails-template">			
-			<div class="exDetailsSection">
-			<div class="exName"><%=setobj.exercises.get('name')%></div>		
+			<div class="exName"><%=setobj.exercises.get('name')%></div>	
+			<div class="exDetailsSection">				
 			<div class="tableRow headerRow">
 				<span class="setfield">Reps</span>
 				<span class="setfield">Weight</span>
@@ -95,12 +100,10 @@
 	
 
 	<script type="text/template" id="workoutItem-template">
-		
-		<td class="workoutItem"><%=setobj.get('name')%></td>
-		<td class="workoutItem"><%=setobj.get('date')%></td>
-		<td class="workoutItem"><%=setobj.get('time')%></td>
-		<td class="workoutItem"><%=setobj.get('notes')%></td>
-		<td class="workoutItem"><span class="edit">edit</span>|<span class="similar">similar</span></td>
+		<span class="workoutItem"><%=setobj.get('name')%></span>		
+		<span class="workoutItem"><%= setobj.get('date')%></span>
+		<span class="workoutItem"><%= setobj.get('time')%></span>
+		<span class="workoutItem"><%=setobj.get('notes')%></span>
 		
 	</script>
 
