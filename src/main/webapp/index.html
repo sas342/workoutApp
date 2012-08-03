@@ -23,6 +23,7 @@
 	
     <!-- Todo App Interface -->
 	<div id="header"><div class="titleHeader">The Workout Journal</div></div>
+	<hr style="border-width: 2px; border-color: #dddddd;"/>
 	
 	<div id="title"></div>
 	
@@ -62,16 +63,8 @@
 				<span class="workoutItem sortable">Date</span>
 				<span class="workoutItem sortable">Time</span>
 				<span class="workoutItem">Notes</span>
+				<span class="options"></span>
 		</div>			
-		</div>
-		
-		<div id="exDetails">
-			<hr/>
-			
-			<div class="exTable">
-				<span class="exDetailsHeading">Exercises</span>
-				<div id="exercises"/>
-			</div>
 		</div>
 		
 		
@@ -104,7 +97,8 @@
 		<span class="workoutItem"><%= setobj.get('date')%></span>
 		<span class="workoutItem"><%= setobj.get('time')%></span>
 		<span class="workoutItem"><%=setobj.get('notes')%></span>
-		
+		<span class="options" style="visibility: hidden"><span class="edit">Edit</span>|<span class="similar">Similar</span></span>
+		<div class="exercises" style="display: none"></div>
 	</script>
 
 	<script type="text/template" id="form-template">

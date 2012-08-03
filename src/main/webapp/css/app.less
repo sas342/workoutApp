@@ -120,8 +120,7 @@ fieldset {
 
 /** exercise details in form */
 .exDetails {
-	float: right;
-	width: 50%;
+	
 	
 	fieldset {
 		margin-top: 20px;
@@ -164,7 +163,7 @@ fieldset {
   
   .wtable {
 	display: block;
-	width: 800px;
+	width: 900px;
 	border: thin solid #7a7a7a;
 	-webkit-box-shadow: 5px 5px 7px #888;
 	-webkit-border-bottom-right-radius: 15px;
@@ -174,7 +173,7 @@ fieldset {
 	-moz-border-bottom-left-radius: 15px;
 	
 	.selected{
-	  background-color: @highlightBlue; 
+	  background-color: #ddd;
 	}
   }
   
@@ -189,27 +188,7 @@ fieldset {
 	display: block;
   }
   
-  .exDetails {
-	border: thin solid #7a7a7a;
-	-webkit-box-shadow: 5px 5px 7px #888;
-	-webkit-border-bottom-right-radius: 15px;
-	-webkit-border-bottom-left-radius: 15px;
-	-moz-box-shadow: 5px 5px 7px #888;
-	-moz-border-bottom-right-radius: 15px;
-	-moz-border-bottom-left-radius: 15px;
-  }
-  .exDetailsHeading {
-	line-height: 20px;
-	vertical-aling: middle;
-	text-align: center;
-	background: @midBlue;
-	color: white;
-	font-size: 14pt;
-	font-family: arial;
-	display: block;
-	width: 520px;
-  }
-  
+    
   .exTable {
 	width: 520px;
 	border: thin solid #7a7a7a;
@@ -243,10 +222,23 @@ fieldset {
 		text-align: center;
 		display: inline-table;
 	}
+	
+	.exercises {
+		margin-left: 100px;
+	}	
+	
+	.options {
+		width: 100px;
+		display: inline-table;
+	}
 }
 
 .workoutRow:hover {
-  background-color: @highlightBlue;
+  background-color: #ddd;
+  
+  .edit, .similar {
+	visibility: visible;
+  }
 }
 
 

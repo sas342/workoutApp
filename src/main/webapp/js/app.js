@@ -390,13 +390,20 @@ $(function($){
 			app.navigate("similar/"+id, {trigger: true});			
 		},
 		
-		showExDetails: function(e) {			
+		showExDetails: function(e) {	
+			this.$('.exercises > *').remove();			
+			_.each(this.model.exerciseList.models, function(ex) {	
+				this.$('.exercises').append(new ExDetailsView({model: ex}).render().el);
+			}, this);
+			
+			//this.$('.exercises').slideDown();
+			/**
 			$('#exDetails').show();
 			$('#exercises').empty();
 			_.each(this.model.exerciseList.models, function(ex) {	
 				$('#exercises').append(new ExDetailsView({model: ex}).render().el);
 			}, this);
-			
+			*/
 		}
 	});
 	
@@ -456,6 +463,9 @@ $(function($){
 		updateSelection: function(e) {
 			this.$('.workoutRow').removeClass("selected");
 			this.$(e.target.parentNode).addClass("selected");
+			
+			this.$('.workoutRow .exercises').slideUp();			
+			this.$(e.target.parentNode).children('.exercises').slideDown();
 		}
 
 	});
