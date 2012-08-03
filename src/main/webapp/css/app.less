@@ -3,16 +3,18 @@
 @darkBlue: #0225a1;
 @highlightBlue: #86a0fd;
 @lightBlue: #afc0fe;
-
+@body: #e8e8e2;
+@lightLine: #d2d2d2;
 
 body {
-  background: #e8e8e2;
+  background: @body;
 }
 
 /** Header Bar info */
 #header {
   display: block;
   height: 50px;
+  line-height: 40px;
   width: 1010px;
   margin-left: 50px;
   
@@ -23,12 +25,12 @@ body {
 	}
 	
 	.menuHeader {
-		float: right;
-		height: 40px;
+		float: right;		
 		position: relative;
 		
 		.selected {
 			 color: @midBlue !important;
+			 background: @body;
 		}
 		
 		span:hover {
@@ -51,8 +53,7 @@ body {
 			  
 			.close {
 				position: absolute;
-				right: 10px;
-				line-height: 25px;
+				right: 10px;				
 				font-family: arial; 
 			}
 			  
@@ -71,16 +72,23 @@ body {
 
 
 #content {
-  margin-left: 50px;
-  margin-right: 50px;
+  margin: 0 auto;
+  position: relative;
+  width: 1000px;
 }
 
 #workouts, #new{
   float: left;
-  width: 100px;
-  color: black;  
+  width: 100px; 
   display: inline-block;
   text-align: center;
+  border: thin solid @lightLine;
+  border-radius: 10px;
+  margin-right: 15px;
+  -webkit-box-shadow: 5px 5px 7px #888;
+  line-height: 25px;
+  margin-top: 5px;
+  background: white;
 }
 
 #workouts:hover, #new:hover {
@@ -216,6 +224,7 @@ fieldset {
 .workoutRow, .headerRow {  
   display: table;
   background: white;
+  line-height: 30px;
   
 	.workoutItem {
 		width: 200px;
