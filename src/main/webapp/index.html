@@ -31,12 +31,13 @@
 
     <!-- Templates -->
 	<script type="text/template" id="SearchBar-template">
-		<input class="gray" name="search" type="text" value="search for workouts"/><span class="close">X</span>
+		
+		<span class="searchIcon"></span><input class="gray" name="search" type="text" value="search for workouts"/><span class="close"></span>
 	</script>
 	
 	<script type="text/template" id="Menu-template">
-		<span data-to="workouts" id="workouts" title="My Workouts">Home</span>
-		<span data-to="add" id="new" title="Add new workout">Add Workout</span>			
+		<span data-to="workouts" id="workouts" class="menuItem" title="My Workouts">Home</span>
+		<span data-to="add" id="new" class="menuItem" title="Add new workout">Add Workout</span>			
 	</script>
 	
 	<script type="text/template" id="pagination-template">

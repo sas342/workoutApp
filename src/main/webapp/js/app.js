@@ -31,13 +31,18 @@ $(function($){
 		},
 		
 		initialize: function(options) {
-			var menu = new MenuView();
-			$("#header").append(menu.render().el);
+			this.menu = new MenuView();
+			$("#header").append(this.menu.render().el);
 			this.AppView = new AppView();
+						
 		},
 		
+		updateMenu: function(page) {
+			this.menu.updateMenuIcon(page);
+		},
 				
 		update : function(id) {
+			this.updateMenu("add");
 			var model;			
 			if (id) {
 				model = new Workout({id: id});
@@ -51,6 +56,7 @@ $(function($){
 		},
 	
 		workouts : function(name) {
+			this.updateMenu("workouts");
 			var workoutCollection = new WorkoutList();
 			var view = new WorkoutListView({model: workoutCollection});
 			if (name) {
@@ -243,7 +249,7 @@ $(function($){
 		events: {
 			"keypress input": "keypressed",
 			"click .close": "close",
-			"click ": "removeText"
+			"click input": "lowerText"
 		},
 		
 		initialize: function(options) {
@@ -257,15 +263,24 @@ $(function($){
 		},
 		
 		keypressed: function(e) {
+			if (!this.clearedSearchText) {
+				this.$('input').val('');
+				this.clearedSearchText = true;
+				this.$('input').removeClass("lightGray");
+			}
+			
 			if (e.keyCode == 13) {
 				this.search(e.target.value);
 			}
 			
 		},
 		
-		removeText: function() {
-			this.$('input').val('');
-			this.$('input').removeClass("gray");
+				
+		lowerText: function() {
+			if (!this.clearedSearchText) {
+				this.$('input').removeClass("gray");
+				this.$('input').addClass("lightGray");
+			}
 		},
 		
 		search: function(name) {
@@ -273,7 +288,8 @@ $(function($){
 		},
 		
 		close: function(name) {
-			this.$('input').val('');
+			this.$('input').val('search for workouts');
+			this.clearedSearchText = false;
 			app.navigate("workouts", {trigger: true});
 		}
 		
@@ -290,7 +306,7 @@ $(function($){
 		},
 		
 		initialize: function(options) {
-			_.bindAll(this, 'render', 'navigate', 'clear');
+			_.bindAll(this, 'render', 'navigate', 'clear', 'updateMenuIcon');
 		},
 		
 		render: function(options) {
@@ -301,10 +317,14 @@ $(function($){
 		},
 		
 		navigate: function(e) {
-			this.clear();			
 			var to = e.target.getAttribute('data-to');
-			this.$('span[data-to="'+to+'"]').addClass('selected');
+			this.updateMenuIcon(to);
 			app.navigate(to, {trigger: true});
+		},
+		
+		updateMenuIcon: function(to) {
+			this.clear();			
+			this.$('span[data-to="'+to+'"]').addClass('selected');
 		},
 		
 		clear: function() {
@@ -611,12 +631,13 @@ $(function($){
 		events: {
 			"change #numEx": "updateNumberOfExercises",
 			"click #submitbtn": "submitWorkout",
-			"change input": "updateWorkoutValues"
+			"change input": "updateWorkoutValues",
+			"focus input": "outline"
 			
 		},
 		
 		initialize: function(options) {		
-			_.bindAll(this, 'render', 'addExercise', 'removeExercise', 'addExerciseForm', 'removeExerciseForm', 'createSelects', 'updateNumberOfExercises', 'updateWorkoutValues'); 
+			_.bindAll(this, 'render', 'addExercise', 'removeExercise', 'addExerciseForm', 'removeExerciseForm', 'createSelects', 'updateNumberOfExercises', 'updateWorkoutValues', 'outline'); 
 			this.bindTo(this.model.exerciseList, 'add', this.addExerciseForm);
 			this.bindTo(this.model.exerciseList, 'remove', this.removeExerciseForm);
 			this.bindTo(this.model, 'change', this.render);
@@ -713,6 +734,11 @@ $(function($){
 		clear : function() {
 			this.model.clear();
 			this.setup();
+		},
+		
+		outline : function(e) {
+			this.$('input').removeClass('outline');
+			this.$(e.target).addClass('outline');
 		}
 		
 	});

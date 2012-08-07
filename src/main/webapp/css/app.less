@@ -22,6 +22,7 @@ body {
 		float: left;
 		font-size: 18pt;
 		color: @midBlue;
+		text-shadow: black 1px 2px 3px;
 	}
 	
 	.menuHeader {
@@ -33,37 +34,60 @@ body {
 			 background: @body;
 		}
 		
-		span:hover {
+		.menuItem:hover {
 			cursor: pointer;
 		}
 		
 		.searchBar {
 			display: inline;
 			margin-left: 20px;
-  
+			border-radius: 4px 4px 4px 4px;
+			border: thin solid black;
+			background: white;
+			-webkit-transition: -webkit-transform .5s ease-in;
+			
 			.gray {
 			  color: gray;
 			}
 			
-			input {
-				border-radius: 4px 4px 4px 4px;
-				border: thin solid black;
+			.lightGray {
+			  color: lightgray;
+			}
+			
+			input {				
+				border: none;
 				width: 200px;
 			}
+			
+			input:focus {
+				outline: @lightBlue;
+			}
 			  
+			.searchIcon {
+				background: url("../images/search.png") no-repeat center center transparent;
+				position: relative;
+				width: 20px;
+				height: 20px;
+				display: inline-block;
+				top: 5px;
+			}
+			
 			.close {
-				position: absolute;
-				right: 10px;				
-				font-family: arial; 
+				background: url("../images/close.png") no-repeat center center transparent;
+				position: relative;
+				height: 20px;
+				width: 20px;
+				display: inline-block;
+				top: 5px;
 			}
 			  
 			.close:hover {
 				cursor: pointer;
 			}
 		}
-
-
 	}
+	
+	
 	
 	
 }
@@ -99,6 +123,15 @@ body {
 fieldset {
 	border-radius: 6px 6px 6px 6px;
 	border-color: @midBlue;
+	
+	input {
+		-webkit-transition: outline 0.3s linear;		
+		outline-color: lightgray;
+	}
+	
+	.outline {
+		outline-color: @midBlue !important;
+	}
 }
 
 #workoutForm {
@@ -305,8 +338,9 @@ fieldset {
   margin: 5px;
 }
 
-.paginator .first:hover, .paginator .prev:hover, .paginator .next:hover, .paginator .last:hover {
+.paginator span:hover {
   cursor: pointer;
+  color: @midBlue;
 }
 
 
