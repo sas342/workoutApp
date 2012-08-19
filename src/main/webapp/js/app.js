@@ -122,6 +122,11 @@ $(function($){
 				delete object['workoutId'];
 			}
 			return object;
+		},
+
+		clear: function() {
+			Backbone.Model.prototype.clear.call(this);
+			this.exerciseList = new ExerciseList();
 		}
 				
 	});
@@ -588,7 +593,7 @@ $(function($){
 						names[i++] = ex.name;
 					});
 					
-					that.$(".exName").autocomplete({source: names});
+					that.$(".exName").autocomplete({source: names, change: function(event, ui){that.model.exercises.set(event.target.name, event.target.value);}});
 					
 				}
 			});
@@ -599,6 +604,7 @@ $(function($){
 			e.stopImmediatePropagation();
 					
 			var target = e.target;
+			//alert(target.name+' ' + target.value);
 			this.model.exercises.set(target.name, target.value);
 		},
 		
@@ -687,7 +693,7 @@ $(function($){
 		},
 		
 		removeExerciseForm : function() {
-			this.$(".exercise:last-child").remove();
+			this.$(".exDetails > div:last-child").remove();
 		},
 		
 		addExercise : function() {			
@@ -701,7 +707,7 @@ $(function($){
 		updateNumberOfExercises : function(event) {
 			var currentCnt = this.$(".exerciseForm").length; 
 			var newCnt = event.currentTarget.value;
-						
+			console.log(currentCnt+" "+newCnt);			
 			if (currentCnt < newCnt) {
 				_.each(_.range(newCnt - currentCnt), this.addExercise);
 			} 
@@ -714,7 +720,9 @@ $(function($){
 		updateWorkoutValues: function(e) {
 	
 			var target = e.target;
-			this.model.set(target.name, target.value);
+			var name = target.name;
+			var value = target.value;
+			this.model.set(target.name, target.value, {silent: true});
 		},
 		
 		submitWorkout : function() {
@@ -728,12 +736,12 @@ $(function($){
 					that.clear();
 				},
 				dataType: "json"});
-					
+				
 		},
 
 		clear : function() {
 			this.model.clear();
-			this.setup();
+			this.render();
 		},
 		
 		outline : function(e) {
