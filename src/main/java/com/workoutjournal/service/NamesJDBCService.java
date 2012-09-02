@@ -11,23 +11,19 @@ import com.workoutjournal.model.Exercises;
 
 @Transactional(readOnly=true)
 public class NamesJDBCService implements NamesService{
-
-	@Override
+	
 	public Exercises getName(int id) {
 		return dao.getExercises(id);
 	}
-	
-	@Override
+		
 	public Exercises getByName(String name) {
 		return dao.getExercisesByName(name);
 	}
-	
-	@Override
+		
 	public List<Exercises> getNames(String name) {
 		return dao.getExercises(name);
 	}
-	
-	@Override
+		
 	@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 	public Exercises addExerciseName(String name) {
 		return dao.addExerciseName(name);

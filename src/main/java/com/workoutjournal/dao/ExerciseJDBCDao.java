@@ -107,8 +107,7 @@ public class ExerciseJDBCDao {
 	
 	public class ExerciseRowWrapper implements RowMapper<Exercise> {
 
-		@Override
-		public Exercise mapRow(ResultSet rs, int arg1) throws SQLException {
+		public Exercise mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Exercise ex = new Exercise();
 			ex.setExerciseId(rs.getInt("exercise_id"));
 			ex.setExNum(rs.getInt("ex_num"));
@@ -118,6 +117,8 @@ public class ExerciseJDBCDao {
 			ex.setExercises(name);
 			return ex;
 		}
+
+		
 		
 	}
 	

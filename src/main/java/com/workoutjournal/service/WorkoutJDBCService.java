@@ -16,14 +16,12 @@ import com.workoutjournal.model.WorkoutList;
 
 @Transactional(readOnly=true)
 public class WorkoutJDBCService implements WorkoutService{
-
-	@Override
+	
 	public Workout getWorkout(String userId, int workoutId) {
 		Workout workout = workoutDao.getWorkout(userId, workoutId);
 		return updateWorkoutDetails(workout);
 	}
-
-	@Override
+	
 	public WorkoutList getWorkouts(String userId, Parameters parameters) {
 		Paginator paginator = parameters.getPaginator();
 		parameters.setOrderColumn(getColumn(parameters.getOrderColumn()));
@@ -34,8 +32,7 @@ public class WorkoutJDBCService implements WorkoutService{
 		}
 		return wlist;
 	}
-	
-	@Override
+		
 	public WorkoutList getWorkouts(String userId, String name, Parameters parameters) {
 		Paginator paginator = parameters.getPaginator();
 		parameters.setOrderColumn(getColumn(parameters.getOrderColumn()));
@@ -46,8 +43,7 @@ public class WorkoutJDBCService implements WorkoutService{
 		return wlist;
 	}
 	
-	@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
-	@Override
+	@Transactional(readOnly=false, propagation=Propagation.REQUIRED)	
 	public boolean updateWorkout(String userId, Workout workout) {
 		Workout updatedWorkout = workoutDao.updateWorkouts(userId, workout);
 		boolean updated = updatedWorkout.getWorkoutId() != null;
@@ -63,14 +59,12 @@ public class WorkoutJDBCService implements WorkoutService{
 		
 	}
 	
-	@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
-	@Override
+	@Transactional(readOnly=false, propagation=Propagation.REQUIRED)	
 	public boolean deleteWorkout(String userId, int workoutId) {
 		return workoutDao.deleteWorkout(workoutId);
 	}
 	
-	@Transactional()
-	@Override
+	@Transactional()	
 	public List<Workout> getSimilarWorkouts(String userId, int workoutId) {
 		List<Workout> list = workoutDao.getSimilarWorkouts(userId, workoutId);
 		for (Workout w : list) {

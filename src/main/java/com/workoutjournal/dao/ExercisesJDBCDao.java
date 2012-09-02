@@ -46,8 +46,7 @@ public class ExercisesJDBCDao {
 	}
 	
 	public class ExNameRowMapper implements RowMapper<Exercises> {
-
-		@Override
+		
 		public Exercises mapRow(ResultSet rs, int arg1) throws SQLException {
 			Exercises ex = new Exercises();
 			ex.setName(rs.getString("name"));

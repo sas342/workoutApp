@@ -46,8 +46,7 @@ public class SetsJDBCDao {
 	}
 	
 	public class SetsRowMapper implements RowMapper<ExSet> {
-
-		@Override
+		
 		public ExSet mapRow(ResultSet rs, int arg1) throws SQLException {
 			ExSet set = new ExSet();
 			set.setExId(rs.getInt("ex_id"));

@@ -15,8 +15,7 @@ import com.workoutjournal.model.Paginator;
 
 @Transactional(readOnly=true)
 public class ExerciseJDBCService implements ExerciseService{
-
-	@Override
+	
 	public List<Exercise> getExercisesByWorkout(int workoutId) {
 		List<Exercise> exList = exDao.getWorkoutExercises(workoutId);
 		for (Exercise ex : exList) {
@@ -25,15 +24,13 @@ public class ExerciseJDBCService implements ExerciseService{
 		
 		return exList;
 	}
-	
-	@Override
+		
 	public Exercise getExercise(String userId, int exerciseId) {
 		Exercise ex = exDao.getExercise(userId, exerciseId);
 		updateExercise(ex);
 		return ex;
 	}
-	
-	@Override
+		
 	public ExerciseList getExercises(String userId, String name, Parameters param) {
 		Paginator paginator = param.getPaginator();
 		ExerciseList list = exDao.getExercises(userId, name, paginator.getStart(), paginator.getSize(), param.isAsc());
@@ -42,8 +39,7 @@ public class ExerciseJDBCService implements ExerciseService{
 		}
 		return list;
 	}
-	
-	@Override
+		
 	@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 	public boolean updateExercise(String userId, Exercise ex){
 		if (ex.getExercises() != null && ex.getExercises().getId() == null) {
@@ -59,8 +55,7 @@ public class ExerciseJDBCService implements ExerciseService{
 		}
 		return updated;
 	}
-	
-	@Override
+		
 	@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 	public boolean deleteExercise(String userId, int exerciseId) {
 		return exDao.deleteExercise(exerciseId);
@@ -91,4 +86,5 @@ public class ExerciseJDBCService implements ExerciseService{
 	
 	SetsService setsService;
 	NamesService nameService;
+	
 }

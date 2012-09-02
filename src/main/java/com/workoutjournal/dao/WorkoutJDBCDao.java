@@ -137,7 +137,6 @@ public class WorkoutJDBCDao {
 	
 	public class WorkoutRowWrapper implements RowMapper<Workout> {
 
-		@Override
 		public Workout mapRow(ResultSet rs, int rowNum) throws SQLException {
 			if (rs != null) {
 				Workout workout = new Workout();

@@ -12,17 +12,14 @@ import com.workoutjournal.model.ExSet;
 @Transactional(readOnly=true)
 public class SetsJDBCService implements SetsService{
 
-	@Override
 	public List<ExSet> getSetsByExercise(int exId) {
 		return setDao.getSets(exId);
 	}
-	
-	@Override
+		
 	public ExSet getSet(int setId) {
 		return setDao.getSet(setId);
 	}
-	
-	@Override
+		
 	@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 	public boolean updateSet(ExSet set) {
 		return setDao.updateSet(set);
