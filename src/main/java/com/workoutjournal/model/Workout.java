@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -22,7 +23,7 @@ public class Workout implements Serializable {
     
     private String name;
   
-    
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date date;
     
     
