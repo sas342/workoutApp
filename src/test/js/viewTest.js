@@ -25,7 +25,3 @@ test("pagination view", function() {
 	ok(pag.el != null, "pagination rendered");
 });
 
-
-
-
-
