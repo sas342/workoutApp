@@ -206,7 +206,7 @@
 				  <target>1.5</target>
 			  </configuration>
 		  </plugin>
-		  
+		  <!--
 		  <plugin>
 			<groupId>org.codehaus.mojo</groupId>
 			<artifactId>exec-maven-plugin</artifactId>
@@ -220,14 +220,15 @@
 				</execution>
 			</executions>
 			<configuration>
-				<mainclass>org.mozilla.javascript.tools.shell.Main</mainclass>
+				<workingDirectory>${basedir}/src/test/js</workingDirectory>
+				<mainClass>org.mozilla.javascript.tools.shell.Main</mainClass>
 				<arguments>
 					<argument>-opt</argument>
 					<argument>-1</argument>
 					<argument>${basedir}/src/test/js/testRunner.js</argument>
 				</arguments>
 			</configuration>
-		</plugin>
+		</plugin>-->
 	  </plugins>
   	<finalName>${project.artifactId}</finalName>
   </build>
