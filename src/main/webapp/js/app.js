@@ -1,4 +1,6 @@
-//$(function($){
+//
+
+	
 
 	/** Module to handle loading views into main content panel.  Will close previous view
 	  http://lostechies.com/derickbailey/2011/09/15/zombies-run-managing-page-transitions-in-backbone-apps/ and
@@ -750,8 +752,9 @@
 		}
 		
 	});
-	
-	
-	var app = new Workspace();
+
+
+	app = new Workspace();
 	Backbone.history.start();
-//});
+	
+

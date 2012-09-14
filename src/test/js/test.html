@@ -21,8 +21,26 @@
   <script src="resources/qunit.js"></script>
   <script src="resources/sinon-1.4.2.js"></script>
   
+  
   <!-- test files -->
   <script src="modelTest.js"></script>
   <script src="collectionTest.js"></script>
+  <script src="viewTest.js"></script>
+  
+  
+  <!-- templates copied from index.html-->
+  <script type="text/template" id="pagination-template">
+	<% if (setobj.start > 0) {%>
+		<span class="first"><<</span>
+		<span class="prev"><</span>
+	<% } %>
+	
+	<%=setobj.start+1%> - <%=setobj.start + setobj.models.length%> of <%=setobj.totalCount%>
+	<% if (setobj.start + setobj.models.length < setobj.totalCount) { %>
+		<span class="next">></span>
+		<span class="last">>></span>
+	<% } %>
+</script>
+	
 </body>
 </html>
